@@ -13,7 +13,7 @@ var port = process.env.PORT || 3000;
 
 // server.listen(port);
 
-app.use(express.static('client/build'))
+// app.use(express.static('client/build'));
 app.get('*', (req, res) => {
     res.writeHead(200, {"Content-Type": "text/plain"});
     res.end("Hello Another World!");
