@@ -12,7 +12,9 @@ const port = process.env.PORT || 3000;
 // });
 app.use(express.static('client/build'))
 app.get('*', (req, res) => {
-    res.sendFile('client/build/index.html');
+    res.writeHead(200, {"Content-Type": "text/plain"});
+    res.end("Hello World!");
+    // res.sendFile('client/build/index.html');
 })
 app.listen(port);
 
