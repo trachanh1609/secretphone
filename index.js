@@ -1,6 +1,6 @@
-var express = require('express');
-var app = express();
-var port = process.env.PORT || 3000;
+const express = require('express');
+const app = express();
+const port = process.env.PORT || 3000;
 
 // var http = require('http');
 
@@ -13,11 +13,11 @@ var port = process.env.PORT || 3000;
 
 // server.listen(port);
 
-// app.use(express.static('client/build'));
+app.use(express.static('client/build'));
 app.get('*', (req, res) => {
-    res.writeHead(200, {"Content-Type": "text/plain"});
-    res.end("Hello Another World!");
-    // res.sendFile('client/build/index.html');
+    // res.writeHead(200, {"Content-Type": "text/plain"});
+    // res.end("Hello Another World!");
+    res.sendFile('client/build/index.html');
 })
 app.listen(port);
 
