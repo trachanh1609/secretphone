@@ -5,6 +5,7 @@ export const cities = [
     'Hà Nội',
     'An Giang',
     'Cần Thơ',
+    'Phú Yên',
     'Hải Phòng',
     'Bắc Ninh',
     'Huế',
@@ -21,4 +22,6 @@ export const cities = [
 export const database = [
     {name: 'HuyềnKelly', location: 'Tuyên Quang'},
     {name: 'Huyền', location: 'Nghệ An'},
+    {name: 'Thanh Trúc', location: 'Phú Yên'},
+    {name: 'Trang', location: 'Đak Nông'},
   ];
