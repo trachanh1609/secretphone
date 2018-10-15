@@ -12,7 +12,18 @@ import Button from '@material-ui/core/Button';
 
 import ImgMediaCard from './components/ImgMediaCard';
 import NoInfo from './components/NoInfo';
-import {cities, database} from './db';
+import {NoCity} from './components/ErrorMessages';
+// import {cities, database} from './db';
+import GetSheetDone from 'get-sheet-done';
+import { createMuiTheme } from '@material-ui/core/styles';
+
+const DOC_ID = '1_4pP2I8ordpGL3L_9hpAp0G1K3OhhYnfTNYrWtrXemM';
+
+const theme = createMuiTheme({
+  typography: {
+    useNextVariants: true,
+  },
+});
 
 const styles = theme => ({
   root: {
@@ -44,6 +55,21 @@ class App extends Component {
     name: '',
     location: '',
     accquainted: null,
+    persons: [],
+    cities: [],
+  }
+
+  componentDidMount = () => {
+    const PersonsSheetNum = 1 ;
+    const CitiesSheetNum = 2;
+
+    GetSheetDone.labeledCols(DOC_ID, PersonsSheetNum).then(sheet=> {
+      this.setState({persons : sheet.data});
+    })
+
+    GetSheetDone.raw(DOC_ID, CitiesSheetNum).then(sheet=> {
+      this.setState({cities: sheet.data[0]});
+    })
   }
 
   handleChange = event => {
@@ -51,10 +77,10 @@ class App extends Component {
   };
 
   checkAccquainted = () => {
-    const {name, location} = this.state;
+    const {name, location, persons} = this.state;
     let accquainted = null;
-    for(let person of database){
-      if(name.toLocaleLowerCase === person.name.toLocaleLowerCase && location === person.location) {
+    for(let person of persons){
+      if(name.toLowerCase() === person.name.toLowerCase() && location === person.location) {
         console.log("I know this person");
         accquainted = true;
       }
@@ -70,7 +96,7 @@ class App extends Component {
 
   render() {
     const { classes } = this.props;
-    const {accquainted} = this.state ;
+    const {accquainted, cities} = this.state ;
     return (
       <div className="App">
         <header className="">
@@ -83,7 +109,7 @@ class App extends Component {
                 {/* <Input value={this.state.name} onChange={(event)=>{this.handleInputChange(event)}}/> */}
                 <form onSubmit={this.handleFormSubit} className={classes.form}>
                   <FormControl className={classes.formControl}>
-                    <TextField value={this.state.name} name="name" label="Tên của bạn" margin="normal" onChange={this.handleChange}></TextField>
+                    <TextField value={this.state.name} name="name" label="Tên của bạn trên Ymeetme" margin="normal" onChange={this.handleChange}></TextField>
                     <Select
                       value={this.state.location}
                       onChange={this.handleChange}
@@ -114,6 +140,7 @@ class App extends Component {
               </Grid>
             </Paper>
             <br/>
+            {cities.length === 0 && <NoCity></NoCity>}
             {accquainted === true ? <ImgMediaCard name={this.state.name}></ImgMediaCard> : null }
             {accquainted === false ? <NoInfo></NoInfo> : null }
             
@@ -130,4 +157,4 @@ App.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(App);
+export default withStyles(styles(theme))(App);
